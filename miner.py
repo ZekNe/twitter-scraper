@@ -19,78 +19,48 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 #make data list
-public_tweets = api.home_timeline()
-columns = ['Time', 'User', 'Tweet']
+user = api.get_user(screen_name = 'NASA') #enter user screen name
+my_public_tweets = api.home_timeline() #personal timeline
+user_public_tweets = api.user_timeline(screen_name = 'NASA') #enter user
+search_tweets = api.search_tweets(q='text' ,geocode='lat,lot,**km') #enter text, latitude, longitude, radius
+columns = ['Time', 'User', 'Tweet'] # for CSV
 data = []
 
 #append data
-for tweet in public_tweets:
-    if len(data) < 6:
-        data.append([tweet.created_at, tweet.user.screen_name, tweet.text])
+for tweet in search_tweets: #(pick search type)
+    if len(data) < 50:
+        data.append([
+            tweet.user.id,
+            tweet.user.name,
+            tweet.user.screen_name,
+            tweet.user.description,
+            tweet.created_at, 
+            tweet.text, 
+            tweet.user.followers_count, 
+            tweet.user.friends_count,
+            tweet.user.location
+            ])
 
 #Write data on json file
 with open('test.json', 'w') as file_object:
     json.dump(data, file_object, default=str, indent=4, sort_keys=True)
 
-# #Get User
-# user = api.get_user(screen_name = 'name')
+# #Write user data on json file
 # with open('user.json', 'w') as file_object:
 #     json.dump(user, file_object, default=str, indent=4, sort_keys=True)
 
-
-#Get User Friends
-friend_columns = ['Name' , 'Id']
-friend_data_list = []
-user = api.get_user(screen_name = 'name')
-with open('friend.json', 'w') as file_object:
-    for friend in user.friends():
-        friend_data = api.get_user(screen_name = friend.screen_name)
-        friend_data_list.append([friend_data.screen_name, friend_data.id])
-    json.dump(friend_data_list, file_object, default=str, indent=4, sort_keys=True)
-
-
-df = pd.DataFrame(friend_data_list, columns = friend_columns)
-df.to_csv('friend_data.csv')   
+# #Get Users Friends
+# friend_columns = ['Name' , 'Id', 'follower_count']
+# friend_data_list = []
+# user = api.get_user(screen_name = 'NASA') #Change name
+# with open('friend.json', 'w') as file_object:
+#     for friend in user.friends():
+#         friend_data = api.get_user(screen_name = friend.screen_name)
+#         friend_data_list.append([friend_data.screen_name, friend_data.id, friend_data.followers_count])
+#     json.dump(friend_data_list, file_object, default=str, indent=4, sort_keys=True)
 
 # #Write data on CSV file
-# df = pd.DataFrame(data, columns = columns)
-# df.to_csv('tweets.csv')
+# df = pd.DataFrame(friend_data_list, columns = friend_columns)
+# df.to_csv('friend_data.csv')   
 
 
-
-# class IDPrinter(tweepy.Stream):
-
-#     def on_status(self, status):
-#         print(status.id)
-
-
-# stream = tweepy.Stream(
-#     api_key, api_key_secret,
-#     access_token, access_token_secret
-# )
-
-# stream.sample()
-
-
-# #Stream
-# class TweetListener(tweepy.Stream):
-
-
-#     def on_data(self, data):
-#         try:
-#             with open('test.json', 'a') as f:
-#                 f.write(data)
-#                 return True
-
-#         except BaseException as e:
-#             print("Error on_data: %s" % str(e))
-#         return True
-
-#     def on_error(self, status):
-#         print(status)
-#         return True
-
-# twitter_stream = TweetListener(
-#     api_key, api_key_secret,
-#     access_token, access_token_secret
-# )
