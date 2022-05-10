@@ -1,4 +1,10 @@
-# Config.ini with your keys
+# Twitter Scraper
+
+### Made in python with Twitter API.
+  
+  
+  
+* Config.ini with your keys
 
 [twitter]
 
