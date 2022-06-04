@@ -53,8 +53,7 @@ def helloCallBack():
                     (tweet.user.id, tweet.user.name, tweet.user.screen_name, tweet.user.description, tweet.created_at, tweet.text, tweet.user.followers_count, tweet.user.friends_count, tweet.user.location))
 
     tkinter.messagebox.showinfo("Twapp", data)
-
-
+    
 # Button
 B = tkinter.Button(top, text="Submit", command=helloCallBack)
 B.grid(row=1, column=1, sticky='s')
