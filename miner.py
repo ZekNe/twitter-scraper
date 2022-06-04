@@ -3,7 +3,6 @@ import configparser
 import pandas as pd
 import json
 
-
 # read config 
 config = configparser.ConfigParser()
 config.read('config.ini')
@@ -73,5 +72,3 @@ with open('test.json', 'w') as file_object:
 # friend_columns = ['Name' , 'Id', 'follower_count']
 # df = pd.DataFrame(friend_data_list, columns = friend_columns)
 # df.to_csv('friend_data.csv')   
-
-
